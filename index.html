@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liu Yifei Ambassador Impact Dashboard - Abu Dhabi Tourism</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* SONER Logo Animation */
+        @keyframes sonerScan { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes sonerBlip { 0%, 20%, 100% { opacity: 0; } 2%, 15% { opacity: 1; } 3% { transform: scale(1.2); } }
+        
+        /* SONER Logo styles */
+        .soner-logo { display: flex; align-items: center; color: white; font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 300; }
+        .soner-radar { width: 24px; height: 24px; border-radius: 50%; border: 1px solid white; margin: 0 3px; position: relative; background-color: rgba(255, 255, 255, 0.05); overflow: hidden; }
+        .soner-scanner { position: absolute; top: 0; left: 0; width: 100%; height: 100%; animation: sonerScan 4s linear infinite; transform-origin: center; }
+        .soner-scanner::before { content: ''; position: absolute; top: 0; left: 50%; width: 50%; height: 50%; background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4)); transform-origin: bottom left; clip-path: polygon(0 0, 100% 0, 0 100%); }
+        .soner-scanner::after { content: ''; position: absolute; top: 0; left: 50%; width: 50%; height: 1px; background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 1)); transform-origin: left center; box-shadow: 0 0 4px rgba(255, 255, 255, 0.8); }
+        .soner-blip { position: absolute; width: 2px; height: 2px; background-color: white; border-radius: 50%; opacity: 0; box-shadow: 0 0 4px white; }
+        .soner-blip:nth-child(1) { top: 25%; left: 30%; animation: sonerBlip 4s 1s infinite; }
+        .soner-blip:nth-child(2) { top: 65%; left: 60%; animation: sonerBlip 4s 2.5s infinite; }
+        .soner-tagline { color: white; font-size: 8px; text-transform: uppercase; font-weight: 500; letter-spacing: 0.5em; margin-left: 10px; opacity: 0.8; }
+
+        :root {
+            --primary: #4285f4;
+            --primary-light: #1a2233;
+            --primary-dark: #8ab4f8;
+            --secondary: #34a853;
+            --secondary-light: #1a2a1e;
+            --warning: #fbbc04;
+            --warning-light: #332a1a;
+            --danger: #ea4335;
+            --danger-light: #331f1e;
+            --gray-100: #1e1e1e;
+            --gray-200: #2d2d2d;
+            --gray-300: #3d3d3d;
+            --gray-400: #4d4d4d;
+            --gray-500: #777777;
+            --gray-600: #a0a0a0;
+            --gray-700: #c0c0c0;
+            --gray-800: #e0e0e0;
+            --gray-900: #f0f0f0;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 15px 25px rgba(0, 0, 0, 0.6);
+            --radius-sm: 4px;
+            --radius: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.3s ease;
+            --bg-color: #000000;
+            --card-bg: #121212;
+            --section-bg: #181818;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--gray-800);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a73e8 0%, #174ea6 100%);
+            color: white;
+            padding: 32px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0MCIgaGVpZ2h0PSI0MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IHgxPSIxMDAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiIGlkPSJhIj48c3RvcCBzdG9wLWNvbG9yPSIjRkZGIiBzdG9wLW9wYWNpdHk9Ii4wNSIgb2Zmc2V0PSIwJSIvPjxzdG9wIHN0b3AtY29sb3I9IiNGRkYiIHN0b3Atb3BhY2l0eT0iLjAyIiBvZmZzZXQ9IjEwMCUiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cGF0aCBkPSJNMTQ0MCAyMDBjLTEzMS44LTEyLjktMjY3LjgtMTkuNC00MDgtMTkuNC0xNDAuMiAwLTI3Ni4yIDYuNS00MDggMTkuNFYwaDgxNnYyMDB6IiBmaWxsPSJ1cmwoI2EpIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .dashboard-section {
+            background-color: var(--section-bg);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow);
+            padding: 28px;
+            margin-bottom: 32px;
+            transition: var(--transition);
+            border: 1px solid var(--gray-300);
+        }
+
+        .dashboard-section:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .dashboard-section h2 {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid var(--gray-200);
+            padding-bottom: 16px;
+            margin-bottom: 28px;
+            color: var(--gray-900);
+            font-size: 1.5rem;
+        }
+
+        .dashboard-section h2 i {
+            margin-right: 12px;
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .metric-card {
+            background-color: var(--gray-100);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .metric-card:hover::before {
+            opacity: 1;
+        }
+
+        .metric-name {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .metric-name i {
+            margin-right: 8px;
+            color: var(--primary);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+
+        .change {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 8px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .change i {
+            margin-right: 4px;
+            font-size: 0.75rem;
+        }
+
+        .positive { 
+            background-color: var(--secondary-light); 
+            color: var(--secondary);
+        }
+
+        .negative { 
+            background-color: var(--danger-light); 
+            color: var(--danger);
+        }
+
+        .challenge-matrix {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 20px 0;
+            align-items: start;
+        }
+
+        .challenge-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .challenge-column h3 {
+            color: var(--gray-900);
+            margin-bottom: 24px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            line-height: 1.4;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--gray-300);
+            text-align: left;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .challenge-item, .solution-item {
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .challenge-item {
+            background-color: var(--warning-light);
+            border-left: 4px solid var(--warning);
+            color: var(--gray-800);
+        }
+
+        .solution-item {
+            background-color: var(--secondary-light);
+            border-left: 4px solid var(--secondary);
+            color: var(--gray-800);
+        }
+
+        .challenge-item:hover, .solution-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .challenge-item strong, .solution-item strong {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .selection-process {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .process-step {
+            background-color: var(--gray-100);
+            padding: 20px;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            position: relative;
+        }
+
+        .process-step::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background-color: var(--primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .process-step h4 {
+            color: var(--gray-900);
+            margin: 10px 0 15px 0;
+            font-size: 1.1rem;
+        }
+
+        .process-step p {
+            color: var(--gray-700);
+            font-size: 0.95rem;
+        }
+
+        .viral-impact {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .viral-card {
+            background-color: var(--gray-100);
+            padding: 20px;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+
+        .viral-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .viral-card h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .viral-card h4 i {
+            margin-right: 10px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--gray-100);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-300);
+        }
+
+        .comparison-table th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: var(--gray-200);
+        }
+
+        .comparison-table tr:hover {
+            background-color: var(--gray-300);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            margin-bottom: 28px;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            border: 1px solid var(--gray-300);
+            transition: var(--transition);
+        }
+
+        .chart-container:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .sentiment-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .sentiment-card {
+            padding: 20px;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+        }
+
+        .sentiment-positive-card {
+            background-color: rgba(40, 167, 69, 0.1);
+            border-left: 4px solid #28a745;
+        }
+
+        .sentiment-neutral-card {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+        }
+
+        .sentiment-negative-card {
+            background-color: rgba(220, 53, 69, 0.1);
+            border-left: 4px solid #dc3545;
+        }
+
+        .profile-360 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .profile-stat {
+            background-color: var(--gray-100);
+            padding: 15px;
+            border-radius: var(--radius);
+            text-align: center;
+            border: 1px solid var(--gray-200);
+        }
+
+        .profile-stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .profile-stat-label {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+
+        /* Enhanced Challenge Matrix Styles */
+        .challenge-matrix-enhanced {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 30px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .challenge-column-enhanced, .solution-column-enhanced {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .challenge-item-enhanced, .solution-item-enhanced {
+            background-color: var(--gray-100);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            min-height: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+        }
+
+        .challenge-item-enhanced {
+            border-left: 4px solid var(--danger);
+        }
+
+        .solution-item-enhanced {
+            border-left: 4px solid var(--secondary);
+        }
+
+        .challenge-item-enhanced:hover, .solution-item-enhanced:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .challenge-number, .solution-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .challenge-number {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .solution-number {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .challenge-content, .solution-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+
+        .challenge-icon, .solution-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .challenge-icon {
+            background-color: rgba(234, 67, 53, 0.1);
+            color: var(--danger);
+        }
+
+        .solution-icon {
+            background-color: rgba(52, 168, 83, 0.1);
+            color: var(--secondary);
+        }
+
+        .challenge-text, .solution-text {
+            flex: 1;
+        }
+
+        .challenge-text strong, .solution-text strong {
+            display: block;
+            color: var(--gray-900);
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .challenge-text span, .solution-text span {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .connector-line {
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            width: 30px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--danger), transparent);
+            transform: translateY(-50%);
+        }
+
+        .matrix-divider {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .divider-line {
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--danger), var(--secondary));
+            position: relative;
+        }
+
+        .divider-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow);
+        }
+
+        /* Hover effects for paired items */
+        .challenge-item-enhanced[data-pair="1"]:hover ~ .matrix-divider ~ .solution-column-enhanced .solution-item-enhanced[data-pair="1"],
+        .solution-item-enhanced[data-pair="1"]:hover {
+            background-color: rgba(52, 168, 83, 0.05);
+            border-left-color: var(--secondary);
+        }
+
+        .challenge-item-enhanced[data-pair="2"]:hover ~ .matrix-divider ~ .solution-column-enhanced .solution-item-enhanced[data-pair="2"],
+        .solution-item-enhanced[data-pair="2"]:hover {
+            background-color: rgba(52, 168, 83, 0.05);
+            border-left-color: var(--secondary);
+        }
+
+        .challenge-item-enhanced[data-pair="3"]:hover ~ .matrix-divider ~ .solution-column-enhanced .solution-item-enhanced[data-pair="3"],
+        .solution-item-enhanced[data-pair="3"]:hover {
+            background-color: rgba(52, 168, 83, 0.05);
+            border-left-color: var(--secondary);
+        }
+
+        .challenge-item-enhanced[data-pair="4"]:hover ~ .matrix-divider ~ .solution-column-enhanced .solution-item-enhanced[data-pair="4"],
+        .solution-item-enhanced[data-pair="4"]:hover {
+            background-color: rgba(52, 168, 83, 0.05);
+            border-left-color: var(--secondary);
+        }
+
+        .challenge-item-enhanced[data-pair="5"]:hover ~ .matrix-divider ~ .solution-column-enhanced .solution-item-enhanced[data-pair="5"],
+        .solution-item-enhanced[data-pair="5"]:hover {
+            background-color: rgba(52, 168, 83, 0.05);
+            border-left-color: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            .challenge-matrix-enhanced {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .matrix-divider {
+                display: none;
+            }
+            
+            .connector-line {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .challenge-matrix {
+                grid-template-columns: 1fr;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 0 16px;
+            }
+            
+            .dashboard-section {
+                padding: 20px;
+                margin-bottom: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 15px;">
+                <div class="soner-logo">
+                    S<div class="soner-radar">
+                        <div class="soner-scanner"></div>
+                        <div class="soner-blip"></div>
+                        <div class="soner-blip"></div>
+                    </div>NER
+                    <span class="soner-tagline">Visual Intelligence</span>
+                </div>
+            </div>
+            <h1>Liu Yifei Partnership: Executive Success Report</h1>
+            <h2 style="font-size: 1.3rem; margin-top: 5px; font-weight: 500;">Department of Culture and Tourism Abu Dhabi</h2>
+            <p>Strategic Celebrity Ambassador Partnership Analysis & Assessment</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Executive Summary -->
+        <div class="dashboard-section" style="background-color: #2d3748; border: 1px solid var(--gray-300);">
+            <h2 style="color: white; border-bottom: 2px solid var(--gray-300);"><i class="fas fa-trophy"></i> Executive Summary: Partnership Success</h2>
+            
+            <!-- Success Declaration -->
+            <div style="background-color: var(--gray-100); padding: 24px; border-radius: var(--radius); margin-bottom: 24px; border-left: 4px solid var(--warning);">
+                <h3 style="color: var(--gray-900); font-size: 1.5rem; margin-bottom: 15px; font-weight: 600; display: flex; align-items: center;">
+                    <i class="fas fa-medal" style="margin-right: 12px; color: var(--warning);"></i>
+                    STRATEGIC SUCCESS ACHIEVED
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div class="metric-card" style="text-align: center; border-left: 4px solid var(--secondary);">
+                        <div class="metric-value" style="color: var(--secondary);">274.3B</div>
+                        <div class="metric-name" style="color: var(--gray-700);">Earned Media Reach</div>
+                        <div style="font-size: 0.8rem; color: var(--secondary); font-weight: 600;">+600% vs 2024</div>
+                    </div>
+                    <div class="metric-card" style="text-align: center; border-left: 4px solid var(--primary);">
+                        <div class="metric-value" style="color: var(--primary);">$2.9M</div>
+                        <div class="metric-name" style="color: var(--gray-700);">Media Value</div>
+                        <div style="font-size: 0.8rem; color: var(--primary); font-weight: 600;">+1,800% vs 2024</div>
+                    </div>
+                    <div class="metric-card" style="text-align: center; border-left: 4px solid var(--warning);">
+                        <div class="metric-value" style="color: var(--warning);">+2pts</div>
+                        <div class="metric-name" style="color: var(--gray-700);">Travel Intent Uplift</div>
+                        <div style="font-size: 0.8rem; color: var(--warning); font-weight: 600;">12-Month Intent</div>
+                    </div>
+                    <div class="metric-card" style="text-align: center; border-left: 4px solid var(--danger);">
+                        <div class="metric-value" style="color: var(--danger);">#1</div>
+                        <div class="metric-name" style="color: var(--gray-700);">Weibo Trending</div>
+                        <div style="font-size: 0.8rem; color: var(--danger); font-weight: 600;">Feb 2024</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Strategic Overview Cards -->
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 24px;">
+                <div style="background-color: var(--gray-100); padding: 20px; border-radius: var(--radius); border-left: 4px solid var(--primary); border: 1px solid var(--gray-200);">
+                    <h4 style="color: var(--gray-900); margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="fas fa-question-circle" style="margin-right: 8px; color: var(--primary);"></i>
+                        Why Celebrity Strategy?
+                    </h4>
+                    <p style="color: var(--gray-700); font-size: 0.95rem; line-height: 1.6;">13% of Chinese consumers inspired by celebrity travel. 2.8x higher engagement vs general influencers. Addresses specific market barriers: distance perception, awareness gaps, cultural barriers.</p>
+                </div>
+                <div style="background-color: var(--gray-100); padding: 20px; border-radius: var(--radius); border-left: 4px solid var(--secondary); border: 1px solid var(--gray-200);">
+                    <h4 style="color: var(--gray-900); margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="fas fa-star" style="margin-right: 8px; color: var(--secondary);"></i>
+                        Why Liu Yifei?
+                    </h4>
+                    <p style="color: var(--gray-700); font-size: 0.95rem; line-height: 1.6;">3-step strategic selection: 71M followers, 7% engagement, international recognition, low risk (Rank 1), premium brand affiliations (LV, BVLGARI).</p>
+                </div>
+                <div style="background-color: var(--gray-100); padding: 20px; border-radius: var(--radius); border-left: 4px solid var(--warning); border: 1px solid var(--gray-200);">
+                    <h4 style="color: var(--gray-900); margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="fas fa-chart-bar" style="margin-right: 8px; color: var(--warning);"></i>
+                        How We Measured
+                    </h4>
+                    <p style="color: var(--gray-700); font-size: 0.95rem; line-height: 1.6;">Earned media reach, social impressions, travel intent, brand health tracking (Q1 2024-Q1 2025), campaign performance (CPV, VTR, ER), sentiment analysis.</p>
+                </div>
+                <div style="background-color: var(--gray-100); padding: 20px; border-radius: var(--radius); border-left: 4px solid var(--danger); border: 1px solid var(--gray-200);">
+                    <h4 style="color: var(--gray-900); margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="fas fa-rocket" style="margin-right: 8px; color: var(--danger);"></i>
+                        Impact Delivered
+                    </h4>
+                    <p style="color: var(--gray-700); font-size: 0.95rem; line-height: 1.6;">Viral phenomenon: "Liu Yifei Storm", 432M impressions (¼ Chinese population), consistently outperformed generic assets, transformed Abu Dhabi from "niche" to viral hotspot.</p>
+                </div>
+            </div>
+            
+            <!-- Conclusion -->
+            <div style="background-color: var(--gray-100); padding: 24px; border-radius: var(--radius); border-left: 4px solid var(--secondary); border: 1px solid var(--gray-200);">
+                <h4 style="color: var(--gray-900); margin-bottom: 12px; text-align: center; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-thumbs-up" style="margin-right: 8px; color: var(--secondary);"></i>
+                    Overall Conclusion & Recommendation
+                </h4>
+                <p style="color: var(--gray-700); text-align: center; font-weight: 500; line-height: 1.6;">
+                    <strong>Clear Success:</strong> All KPIs exceeded targets. <strong>Strategic Value:</strong> Established Abu Dhabi as aspirational destination in China. 
+                    <strong>Recommendation:</strong> Continue and expand celebrity partnerships for China market penetration.
+                </p>
+            </div>
+        </div>
+
+        <!-- Executive KPIs -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-chart-line"></i> Detailed Impact Metrics</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-name"><i class="fas fa-globe"></i> Earned Media Reach</div>
+                    <div class="metric-value">274.3B <span class="change positive"><i class="fas fa-arrow-up"></i> +600% vs 2024</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-name"><i class="fas fa-eye"></i> Social Impressions</div>
+                    <div class="metric-value">432M <span class="change positive"><i class="fas fa-users"></i> ¼ Chinese Population</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-name"><i class="fas fa-bullseye"></i> Travel Intent Uplift</div>
+                    <div class="metric-value">+2pts <span class="change positive"><i class="fas fa-arrow-up"></i> 12-Month Intent</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-name"><i class="fas fa-dollar-sign"></i> Media Value</div>
+                    <div class="metric-value">$2.9M <span class="change positive"><i class="fas fa-arrow-up"></i> +1,800% vs 2024</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-name"><i class="fas fa-hashtag"></i> Mentions</div>
+                    <div class="metric-value">3.5K <span class="change positive"><i class="fas fa-arrow-up"></i> +500% vs 2024</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-name"><i class="fas fa-heart"></i> Positive Sentiment</div>
+                    <div class="metric-value">50.88% <span class="change positive"><i class="fas fa-arrow-up"></i> +51% vs 2024</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-name"><i class="fas fa-brain"></i> Ad Recall Peak</div>
+                    <div class="metric-value">66% <span class="change positive"><i class="fas fa-arrow-up"></i> vs 47% Summer '23</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-name"><i class="fas fa-star"></i> Trust Level (Top Segment)</div>
+                    <div class="metric-value">27% <span class="change positive"><i class="fas fa-users"></i> Authenticity Seekers</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-name"><i class="fas fa-fire"></i> Weibo Trending</div>
+                    <div class="metric-value">#1 <span class="change positive"><i class="fab fa-weibo"></i> Feb 2024 Hot Topic</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Marketing Challenge Matrix -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-exclamation-triangle"></i> Marketing Challenge Matrix</h2>
+            <div class="challenge-matrix-enhanced">
+                <div class="challenge-column-enhanced">
+                    <h3 style="color: var(--danger); margin-bottom: 25px; font-size: 1.3rem; display: flex; align-items: center;">
+                        <i class="fas fa-times-circle" style="margin-right: 10px; color: var(--danger);"></i>
+                        Current Challenges for Abu Dhabi in China
+                    </h3>
+                    <div class="challenge-item-enhanced" data-pair="1">
+                        <div class="challenge-number">1</div>
+                        <div class="challenge-content">
+                            <div class="challenge-icon"><i class="fas fa-plane"></i></div>
+                            <div class="challenge-text">
+                                <strong>"It's too far"</strong>
+                                <span>Distance perception barrier</span>
+                            </div>
+                        </div>
+                        <div class="connector-line"></div>
+                    </div>
+                    <div class="challenge-item-enhanced" data-pair="2">
+                        <div class="challenge-number">2</div>
+                        <div class="challenge-content">
+                            <div class="challenge-icon"><i class="fas fa-child"></i></div>
+                            <div class="challenge-text">
+                                <strong>"Not much entertainment for children"</strong>
+                                <span>Family appeal concerns</span>
+                            </div>
+                        </div>
+                        <div class="connector-line"></div>
+                    </div>
+                    <div class="challenge-item-enhanced" data-pair="3">
+                        <div class="challenge-number">3</div>
+                        <div class="challenge-content">
+                            <div class="challenge-icon"><i class="fas fa-calendar-times"></i></div>
+                            <div class="challenge-text">
+                                <strong>"There is not much to do"</strong>
+                                <span>Activity limitations perception</span>
+                            </div>
+                        </div>
+                        <div class="connector-line"></div>
+                    </div>
+                    <div class="challenge-item-enhanced" data-pair="4">
+                        <div class="challenge-number">4</div>
+                        <div class="challenge-content">
+                            <div class="challenge-icon"><i class="fas fa-language"></i></div>
+                            <div class="challenge-text">
+                                <strong>"They do not speak my language"</strong>
+                                <span>Language barrier concerns</span>
+                            </div>
+                        </div>
+                        <div class="connector-line"></div>
+                    </div>
+                    <div class="challenge-item-enhanced" data-pair="5">
+                        <div class="challenge-number">5</div>
+                        <div class="challenge-content">
+                            <div class="challenge-icon"><i class="fas fa-question-circle"></i></div>
+                            <div class="challenge-text">
+                                <strong>"Don't know enough about Abu Dhabi"</strong>
+                                <span>Awareness gap</span>
+                            </div>
+                        </div>
+                        <div class="connector-line"></div>
+                    </div>
+                </div>
+                
+                <div class="matrix-divider">
+                    <div class="divider-line"></div>
+                    <div class="divider-icon">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+                
+                <div class="solution-column-enhanced">
+                    <h3 style="color: var(--secondary); margin-bottom: 25px; font-size: 1.3rem; display: flex; align-items: center;">
+                        <i class="fas fa-check-circle" style="margin-right: 10px; color: var(--secondary);"></i>
+                        Celebrity Ambassador Solutions
+                    </h3>
+                    <div class="solution-item-enhanced" data-pair="1">
+                        <div class="solution-number">1</div>
+                        <div class="solution-content">
+                            <div class="solution-icon"><i class="fas fa-handshake"></i></div>
+                            <div class="solution-text">
+                                <strong>Familiarity & Trust</strong>
+                                <span>Someone familiar makes Abu Dhabi's offering more tangible</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solution-item-enhanced" data-pair="2">
+                        <div class="solution-number">2</div>
+                        <div class="solution-content">
+                            <div class="solution-icon"><i class="fas fa-heart"></i></div>
+                            <div class="solution-text">
+                                <strong>Authentic Storytelling</strong>
+                                <span>Genuine Abu Dhabi story clarifies the forward-thinking emirate</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solution-item-enhanced" data-pair="3">
+                        <div class="solution-number">3</div>
+                        <div class="solution-content">
+                            <div class="solution-icon"><i class="fas fa-star"></i></div>
+                            <div class="solution-text">
+                                <strong>Stand Out Factor</strong>
+                                <span>Well-known endorsement helps remain top of mind</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solution-item-enhanced" data-pair="4">
+                        <div class="solution-number">4</div>
+                        <div class="solution-content">
+                            <div class="solution-icon"><i class="fas fa-bullhorn"></i></div>
+                            <div class="solution-text">
+                                <strong>Consistent Communication</strong>
+                                <span>Aligned messaging ensures maximum impact</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solution-item-enhanced" data-pair="5">
+                        <div class="solution-number">5</div>
+                        <div class="solution-content">
+                            <div class="solution-icon"><i class="fas fa-eye"></i></div>
+                            <div class="solution-text">
+                                <strong>Experience Showcase</strong>
+                                <span>Recognizable person showcasing experiences increases consideration</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Celebrity Selection Framework -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-search"></i> Strategic Celebrity Selection Framework</h2>
+            <div class="selection-process">
+                <div class="process-step" data-step="1">
+                    <h4>Comprehensive Consideration Set</h4>
+                    <p>Candidates sourced from DCT International offices, PR agencies, Partnerships team and top publications to ensure broad coverage of potential ambassadors.</p>
+                </div>
+                <div class="process-step" data-step="2">
+                    <h4>Social Metrics Ranking</h4>
+                    <p>Preliminary ranking based on audience size across social platforms, brand saturation (measured from last 20 posts), and average engagement rate.</p>
+                </div>
+                <div class="process-step" data-step="3">
+                    <h4>Strategic Framework Evaluation</h4>
+                    <p>Top 15 candidates evaluated using structured framework: brand alignment, audience relevance, social media influence, brand strength, and reputational risk.</p>
+                </div>
+            </div>
+            
+            <h3 style="color: var(--gray-900); margin: 30px 0 20px 0;">Why Liu Yifei Was Selected</h3>
+            <div class="viral-impact">
+                <div class="viral-card">
+                    <h4><i class="fas fa-star"></i> Iconic Celebrity</h4>
+                    <p>Internationally renowned with recognition extending beyond the Chinese market, ensuring global appeal and credibility.</p>
+                </div>
+                <div class="viral-card">
+                    <h4><i class="fas fa-chart-line"></i> Established Impact</h4>
+                    <p>Transformed Abu Dhabi's image from a "niche destination" to a viral and popular hotspot among Chinese travelers.</p>
+                </div>
+                <div class="viral-card">
+                    <h4><i class="fas fa-broadcast-tower"></i> Outstanding Social Performance</h4>
+                    <p>Resulting in over 432M impressions, covering roughly ¼ of the Chinese population with exceptional reach.</p>
+                </div>
+                <div class="viral-card">
+                    <h4><i class="fas fa-handshake"></i> Collaborative Professionalism</h4>
+                    <p>Maintained during each trip and throughout the contracted period for shootings, ensuring smooth partnerships.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Campaign Performance Comparison -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-chart-bar"></i> Campaign Performance: With vs Without Liu Yifei</h2>
+            
+            <!-- Performance Summary -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px;">
+                <div class="metric-card" style="background: linear-gradient(135deg, var(--secondary-light), rgba(52, 168, 83, 0.15)); border-left: 4px solid var(--secondary); position: relative; overflow: visible;">
+                    <div style="position: absolute; top: -8px; right: -8px; background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">RECORD HIGH</div>
+                    <div class="metric-name"><i class="fas fa-trophy"></i> Engagement Rate Advantage</div>
+                    <div class="metric-value" style="color: var(--secondary); font-size: 2.5rem;">+49%</div>
+                    <p style="color: var(--gray-700); font-size: 0.9rem; margin-top: 8px; font-weight: 500;">Liu Yifei campaigns: <strong style="color: var(--secondary);">2.67%</strong> vs 1.79% without celebrity endorsement</p>
+                </div>
+                <div class="metric-card" style="background-color: var(--primary-light); border-left: 4px solid var(--primary);">
+                    <div class="metric-name"><i class="fas fa-eye"></i> View Through Rate</div>
+                    <div class="metric-value" style="color: var(--primary);">38.9%</div>
+                    <p style="color: var(--gray-700); font-size: 0.9rem; margin-top: 8px;">Consistent performance across Liu Yifei campaign periods</p>
+                </div>
+                <div class="metric-card" style="background: linear-gradient(135deg, var(--warning-light), rgba(251, 188, 4, 0.15)); border-left: 4px solid var(--warning); position: relative; overflow: visible;">
+                    <div style="position: absolute; top: -8px; right: -8px; background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">SUPERIOR</div>
+                    <div class="metric-name"><i class="fas fa-star"></i> Quality Impact</div>
+                    <div class="metric-value" style="color: var(--warning); font-size: 2.2rem;">Exceptional</div>
+                    <p style="color: var(--gray-700); font-size: 0.9rem; margin-top: 8px; font-weight: 500;">Higher engagement quality drives <strong style="color: var(--warning);">superior campaign</strong> performance</p>
+                </div>
+            </div>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Campaign Period</th>
+                        <th>CPV (Cost Per View)</th>
+                        <th>VTR (View Through Rate)</th>
+                        <th>ER (Engagement Rate)</th>
+                        <th>Performance Classification</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background-color: var(--secondary-light); border-left: 4px solid var(--secondary); position: relative;">
+                        <td><strong>Winter 2023</strong> <span style="color: var(--secondary); font-weight: 600;">(With Liu Yifei)</span></td>
+                        <td>$0.00126</td>
+                        <td style="position: relative;"><strong style="color: var(--secondary);">42.8%</strong> <span style="position: absolute; top: -6px; right: -6px; background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; padding: 2px 6px; border-radius: 8px; font-size: 0.6rem; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.3);">PEAK VTR</span></td>
+                        <td><strong style="color: var(--secondary);">2.07%</strong></td>
+                        <td><span class="change positive">Superior Engagement</span></td>
+                    </tr>
+                    <tr style="background: linear-gradient(135deg, var(--secondary-light), rgba(52, 168, 83, 0.2)); border-left: 4px solid var(--secondary); position: relative; box-shadow: 0 2px 8px rgba(52, 168, 83, 0.3);">
+                        <td><strong>Summer 2024</strong> <span style="color: var(--secondary); font-weight: 600;">(With Liu Yifei)</span></td>
+                        <td>$0.00108</td>
+                        <td>35.0%</td>
+                        <td style="position: relative;"><strong style="color: var(--secondary); font-size: 1.1rem;">3.26%</strong> <span style="position: absolute; top: -6px; right: -6px; background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; padding: 2px 6px; border-radius: 8px; font-size: 0.6rem; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.3);">RECORD</span></td>
+                        <td><span class="change positive" style="background: linear-gradient(135deg, #22c55e, #16a34a); color: white; font-weight: bold;">Peak Performance</span></td>
+                    </tr>
+                    <tr style="background-color: var(--gray-200); border-left: 4px solid var(--gray-400);">
+                        <td><strong>GBA 2024-25</strong> <span style="color: var(--gray-600); font-weight: 600;">(Without Liu Yifei)</span></td>
+                        <td><strong style="color: var(--primary);">$0.00087</strong></td>
+                        <td>41.2%</td>
+                        <td style="color: var(--gray-600);">1.61%</td>
+                        <td><span style="background-color: var(--gray-300); color: var(--gray-700); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 500;">Cost Efficient</span></td>
+                    </tr>
+                    <tr style="background-color: var(--gray-200); border-left: 4px solid var(--gray-400);">
+                        <td><strong>Brand 2023-24</strong> <span style="color: var(--gray-600); font-weight: 600;">(Without Liu Yifei)</span></td>
+                        <td>$0.00138</td>
+                        <td>38.6%</td>
+                        <td style="color: var(--gray-600);">1.97%</td>
+                        <td><span style="background-color: var(--gray-300); color: var(--gray-700); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 500;">Standard Performance</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- Strategic Performance Analysis -->
+            <div style="background-color: var(--section-bg); border: 1px solid var(--secondary); border-radius: var(--radius); padding: 28px; margin-top: 28px;">
+                <h3 style="color: var(--secondary); margin-bottom: 20px; font-size: 1.3rem; display: flex; align-items: center;">
+                    <i class="fas fa-analytics" style="margin-right: 12px;"></i>
+                    Strategic Performance Analysis
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+                    <div style="padding: 20px; background-color: var(--gray-100); border-radius: var(--radius); border-left: 4px solid var(--secondary);">
+                        <h4 style="color: var(--gray-900); margin-bottom: 12px; font-size: 1.1rem;">Engagement Rate Superiority</h4>
+                        <p style="color: var(--gray-700); font-size: 0.95rem; line-height: 1.6;">Liu Yifei campaigns achieved 49% higher engagement rates (2.67% average vs 1.79% average), demonstrating superior audience connection and content resonance with target demographics.</p>
+                    </div>
+                    <div style="padding: 20px; background-color: var(--gray-100); border-radius: var(--radius); border-left: 4px solid var(--primary);">
+                        <h4 style="color: var(--gray-900); margin-bottom: 12px; font-size: 1.1rem;">Quality Over Cost Efficiency</h4>
+                        <p style="color: var(--gray-700); font-size: 0.95rem; line-height: 1.6;">While non-celebrity campaigns achieved lower cost per view, Liu Yifei campaigns delivered significantly higher engagement quality, resulting in improved performance metrics.</p>
+                    </div>
+                    <div style="padding: 20px; background-color: var(--gray-100); border-radius: var(--radius); border-left: 4px solid var(--warning);">
+                        <h4 style="color: var(--gray-900); margin-bottom: 12px; font-size: 1.1rem;">Peak Performance Achievement</h4>
+                        <p style="color: var(--gray-700); font-size: 0.95rem; line-height: 1.6;">Summer 2024 with Liu Yifei achieved the highest engagement rate (3.26%), demonstrating that celebrity endorsement drives exceptional audience interaction and campaign effectiveness.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Viral Social Media Impact -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-fire"></i> Viral Social Media Impact & "Liu Yifei Storm"</h2>
+            <div class="viral-impact">
+                <div class="viral-card">
+                    <h4><i class="fab fa-weibo"></i> #1 Weibo Trending</h4>
+                    <p><strong>February 2024:</strong> "Liu Yifei Abu Dhabi new shooting" ranked No. 1 on Weibo's hot topic list, generating massive organic reach.</p>
+                </div>
+                <div class="viral-card">
+                    <h4><i class="fas fa-route"></i> RED Platform Viral Itinerary</h4>
+                    <p>Her itinerary went viral with fans replicating her exact Abu Dhabi trip: Grand Mosque, Louvre Abu Dhabi, Qasr Al Watan, Emirates Palace, Desert Safari.</p>
+                </div>
+                <div class="viral-card">
+                    <h4><i class="fas fa-users"></i> "Liu Yifei" Cultural Phenomenon</h4>
+                    <p>Fans use "LIU YIFEI" as salutation within fan groups, meaning "the most beautiful and incredible female" - creating cultural impact beyond tourism.</p>
+                </div>
+                <div class="viral-card">
+                    <h4><i class="fas fa-copy"></i> Content Recreation</h4>
+                    <p>Chinese fans actively recreating their idol's destination content while vacationing in Abu Dhabi, amplifying organic reach and authenticity.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ad Diagnostics Evolution -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-ad"></i> Ad Diagnostics Evolution: Recall, Association & Appeal</h2>
+            
+            <!-- Before/After Comparison Summary -->
+            <div style="background-color: var(--section-bg); border: 1px solid var(--gray-300); border-radius: var(--radius); padding: 24px; margin-bottom: 32px;">
+                <h3 style="text-align: center; color: var(--gray-900); margin-bottom: 24px; font-size: 1.3rem;">
+                    <i class="fas fa-chart-bar" style="margin-right: 10px; color: var(--primary);"></i>
+                    Campaign Performance Comparison: Before vs With Liu Yifei
+                </h3>
+                <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 30px; align-items: center;">
+                    <!-- Before Liu Yifei -->
+                    <div style="text-align: center; padding: 24px; background-color: var(--gray-100); border-radius: var(--radius); border: 2px solid var(--gray-400);">
+                        <h4 style="color: var(--gray-600); margin-bottom: 20px; font-size: 1.1rem;">
+                            <i class="fas fa-calendar-times" style="margin-right: 8px;"></i>
+                            Before Liu Yifei (Summer 2023)
+                        </h4>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+                            <div>
+                                <div style="font-size: 2rem; font-weight: bold; color: var(--gray-600);">46%</div>
+                                <div style="font-size: 0.8rem; color: var(--gray-500); margin-bottom: 4px;">Ad Recall</div>
+                                <div style="font-size: 0.7rem; color: var(--gray-500);">Average</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 2rem; font-weight: bold; color: var(--gray-600);">18.5%</div>
+                                <div style="font-size: 0.8rem; color: var(--gray-500); margin-bottom: 4px;">Association</div>
+                                <div style="font-size: 0.7rem; color: var(--gray-500);">Baseline</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 2rem; font-weight: bold; color: var(--gray-600);">85.5%</div>
+                                <div style="font-size: 0.8rem; color: var(--gray-500); margin-bottom: 4px;">Ad Appeal</div>
+                                <div style="font-size: 0.7rem; color: var(--gray-500);">Standard</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Transformation Arrow -->
+                    <div style="text-align: center;">
+                        <div style="background-color: var(--secondary); color: white; padding: 12px 20px; border-radius: 50px; font-weight: bold; font-size: 1.2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.3); margin-bottom: 8px;">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--gray-600); font-weight: 600;">TRANSFORMATION</div>
+                    </div>
+                    
+                    <!-- With Liu Yifei -->
+                    <div style="text-align: center; padding: 24px; background: linear-gradient(135deg, var(--secondary-light), rgba(52, 168, 83, 0.1)); border-radius: var(--radius); border: 2px solid var(--secondary); position: relative;">
+                        <div style="position: absolute; top: -10px; right: -10px; background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; padding: 6px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">SUPERIOR</div>
+                        <h4 style="color: var(--secondary); margin-bottom: 20px; font-size: 1.1rem;">
+                            <i class="fas fa-star" style="margin-right: 8px;"></i>
+                            With Liu Yifei (Winter 2023 & Summer 2024)
+                        </h4>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+                            <div>
+                                <div style="font-size: 2rem; font-weight: bold; color: var(--secondary);">63.5%</div>
+                                <div style="font-size: 0.8rem; color: var(--secondary); margin-bottom: 4px;">Ad Recall</div>
+                                <div style="font-size: 0.7rem; color: var(--secondary); font-weight: bold;">+38% ↗</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 2rem; font-weight: bold; color: var(--secondary);">46%</div>
+                                <div style="font-size: 0.8rem; color: var(--secondary); margin-bottom: 4px;">Association</div>
+                                <div style="font-size: 0.7rem; color: var(--secondary); font-weight: bold;">+149% ↗</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 2rem; font-weight: bold; color: var(--secondary);">95%</div>
+                                <div style="font-size: 0.8rem; color: var(--secondary); margin-bottom: 4px;">Ad Appeal</div>
+                                <div style="font-size: 0.7rem; color: var(--secondary); font-weight: bold;">+11% ↗</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Timeline Chart -->
+            <div class="chart-container" style="position: relative;">
+                <div style="position: absolute; top: 10px; right: 20px; background-color: var(--gray-100); padding: 8px 12px; border-radius: var(--radius); border: 1px solid var(--gray-300); z-index: 10;">
+                    <div style="display: flex; align-items: center; gap: 15px; font-size: 0.8rem;">
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <div style="width: 12px; height: 12px; background-color: rgba(156, 163, 175, 0.8); border-radius: 2px;"></div>
+                            <span style="color: var(--gray-600);">Without Liu Yifei</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <div style="width: 12px; height: 12px; background: linear-gradient(135deg, var(--secondary), var(--primary)); border-radius: 2px;"></div>
+                            <span style="color: var(--gray-600);">With Liu Yifei</span>
+                        </div>
+                    </div>
+                </div>
+                <canvas id="adDiagnosticsChart"></canvas>
+            </div>
+
+            <!-- Ad Performance Analysis: Comprehensive Results -->
+            <div style="background-color: var(--section-bg); border: 1px solid var(--secondary); border-radius: var(--radius); padding: 28px; margin-top: 28px;">
+                <h3 style="color: var(--secondary); margin-bottom: 24px; font-size: 1.3rem; display: flex; align-items: center; text-align: center; justify-content: center;">
+                    <i class="fas fa-chart-line" style="margin-right: 12px;"></i>
+                    Ad Performance Analysis: Liu Yifei Campaign Results
+                </h3>
+                
+                <!-- Performance Summary Bar -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 32px; padding: 20px; background: linear-gradient(135deg, var(--secondary-light), rgba(52, 168, 83, 0.05)); border-radius: var(--radius); border: 1px solid var(--secondary);">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.2rem; font-weight: bold; color: var(--secondary); margin-bottom: 8px;">+38%</div>
+                        <div style="font-size: 1rem; color: var(--gray-900); font-weight: 600;">Ad Recall Enhancement</div>
+                        <div style="font-size: 0.8rem; color: var(--gray-600); margin-top: 4px;">46% → 63.5%</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.2rem; font-weight: bold; color: var(--primary); margin-bottom: 8px;">+149%</div>
+                        <div style="font-size: 1rem; color: var(--gray-900); font-weight: 600;">Brand Association</div>
+                        <div style="font-size: 0.8rem; color: var(--gray-600); margin-top: 4px;">18.5% → 46%</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.2rem; font-weight: bold; color: var(--warning); margin-bottom: 8px;">+11%</div>
+                        <div style="font-size: 1rem; color: var(--gray-900); font-weight: 600;">Ad Appeal Performance</div>
+                        <div style="font-size: 0.8rem; color: var(--gray-600); margin-top: 4px;">85.5% → 95%</div>
+                    </div>
+                </div>
+
+                <!-- Detailed Analysis Cards -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+                    <div style="padding: 24px; background-color: var(--gray-100); border-radius: var(--radius); border-left: 4px solid var(--secondary);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                            <h4 style="color: var(--gray-900); font-size: 1.1rem; margin: 0;">Ad Recall Performance</h4>
+                            <div style="background-color: var(--secondary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">+38%</div>
+                        </div>
+                        <div style="background-color: var(--gray-200); padding: 12px; border-radius: var(--radius); margin-bottom: 12px; border-left: 3px solid var(--secondary);">
+                            <div style="font-size: 0.85rem; color: var(--gray-600); font-style: italic;">"Do you recall seeing an ad for Abu Dhabi recently?"</div>
+                        </div>
+                        <p style="color: var(--gray-700); font-size: 0.95rem; line-height: 1.6; margin: 0;">
+                            Liu Yifei campaigns significantly improved brand recall performance, with Summer 2024 achieving the highest recall rate (66%) across all campaign periods. This represents substantial improvement in immediate brand awareness and ad memorability.
+                        </p>
+                    </div>
+                    
+                    <div style="padding: 24px; background-color: var(--gray-100); border-radius: var(--radius); border-left: 4px solid var(--primary);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                            <h4 style="color: var(--gray-900); font-size: 1.1rem; margin: 0;">Brand Association Impact</h4>
+                            <div style="background-color: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">+149%</div>
+                        </div>
+                        <div style="background-color: var(--gray-200); padding: 12px; border-radius: var(--radius); margin-bottom: 12px; border-left: 3px solid var(--primary);">
+                            <div style="font-size: 0.85rem; color: var(--gray-600); font-style: italic;">How effectively creative assets are associated with Abu Dhabi as the destination—a crucial step between awareness and consideration</div>
+                        </div>
+                        <p style="color: var(--gray-700); font-size: 0.95rem; line-height: 1.6; margin: 0;">
+                            Liu Yifei campaigns achieved substantial improvement in connecting advertising content to Abu Dhabi, effectively bridging the gap from awareness to actual travel consideration among target audiences.
+                        </p>
+                    </div>
+                    
+                    <div style="padding: 24px; background-color: var(--gray-100); border-radius: var(--radius); border-left: 4px solid var(--warning);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                            <h4 style="color: var(--gray-900); font-size: 1.1rem; margin: 0;">Ad Appeal Performance</h4>
+                            <div style="background-color: var(--warning); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">+11%</div>
+                        </div>
+                        <div style="background-color: var(--gray-200); padding: 12px; border-radius: var(--radius); margin-bottom: 12px; border-left: 3px solid var(--warning);">
+                            <div style="font-size: 0.85rem; color: var(--gray-600); font-style: italic;">Content attractiveness and emotional resonance with target audiences</div>
+                        </div>
+                        <p style="color: var(--gray-700); font-size: 0.95rem; line-height: 1.6; margin: 0;">
+                            Liu Yifei campaigns demonstrated consistent appeal enhancement, with authentic content approach resonating well with target Chinese demographics, maintaining high emotional connection throughout campaign periods.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earned Media Deep Dive -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-newspaper"></i> Earned Media Deep Dive & Sentiment Analysis</h2>
+            <div class="sentiment-breakdown">
+                <div class="sentiment-card sentiment-positive-card">
+                    <h4><i class="fas fa-thumbs-up"></i> Positive Sentiment (50.88%)</h4>
+                    <p><strong>+51% vs 2024</strong></p>
+                    <ul style="margin-top: 10px; padding-left: 20px; color: var(--gray-700);">
+                        <li>Strong praise for her elegance, authenticity and cultural appeal</li>
+                        <li>Image aligned well with destination's aspirational positioning</li>
+                        <li>Particularly resonated with younger, style-conscious audiences</li>
+                    </ul>
+                </div>
+                <div class="sentiment-card sentiment-neutral-card">
+                    <h4><i class="fas fa-minus"></i> Neutral Sentiment (32.68%)</h4>
+                    <ul style="margin-top: 10px; padding-left: 20px; color: var(--gray-700);">
+                        <li>Focused on her visible role in Visit Abu Dhabi promotions</li>
+                        <li>Ads and events without strong emotional commentary</li>
+                        <li>Highlighting her broad commercial presence</li>
+                    </ul>
+                </div>
+                <div class="sentiment-card sentiment-negative-card">
+                    <h4><i class="fas fa-thumbs-down"></i> Negative Sentiment (16.44%)</h4>
+                    <ul style="margin-top: 10px; padding-left: 20px; color: var(--gray-700);">
+                        <li>Small number expressed skepticism about authenticity</li>
+                        <li>Perceived overexposure concerns</li>
+                        <li>Questions about her fit with the Abu Dhabi brand</li>
+                        <li>Some felt the partnership appeared overly commercial</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Liu Yifei Profile 360 -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-user-circle"></i> Liu Yifei Profile 360° Analysis</h2>
+            <div class="profile-360">
+                <div class="profile-stat">
+                    <div class="profile-stat-value">71M</div>
+                    <div class="profile-stat-label">Social Media Followers</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value">7%</div>
+                    <div class="profile-stat-label">Average Engagement</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value">65%</div>
+                    <div class="profile-stat-label">Female Audience</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value">35%</div>
+                    <div class="profile-stat-label">Male Audience</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value">1</div>
+                    <div class="profile-stat-label">Risk Rank (Low)</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value">2.8</div>
+                    <div class="profile-stat-label">Avg Celebrity Engagement</div>
+                </div>
+            </div>
+            
+            <h3 style="color: var(--gray-900); margin: 30px 0 20px 0;">Key Profile Details</h3>
+            <div class="viral-impact">
+                <div class="viral-card">
+                    <h4><i class="fas fa-film"></i> Recent Projects</h4>
+                    <p><strong>The Story of Rose (2024)</strong> - Latest release<br>
+                    <strong>Meet Yourself (2023)</strong> - Award-winning drama<br>
+                    <strong>The Love of Hypnosis (2024)</strong> - Recently launched</p>
+                </div>
+                <div class="viral-card">
+                    <h4><i class="fas fa-crown"></i> Brand Affiliations</h4>
+                    <p><strong>LV Ambassador</strong> - Luxury fashion partnership<br>
+                    <strong>BVLGARI Ambassador</strong> - Jewelry & luxury goods<br>
+                    <strong>International Recognition</strong> - Global market appeal</p>
+                </div>
+                <div class="viral-card">
+                    <h4><i class="fas fa-globe-asia"></i> Top 10 Countries</h4>
+                    <p>China, Indonesia, USA, Thailand, Brazil, Philippines, Malaysia, Mexico, Australia, South Korea</p>
+                </div>
+                <div class="viral-card">
+                    <h4><i class="fas fa-users"></i> Traveler Segment Trust</h4>
+                    <p><strong>Authenticity-Seeking Planner:</strong> 27%<br>
+                    <strong>Foodie Luxury Voyager:</strong> 20%<br>
+                    <strong>Familiar Easy-Going Value Hunter:</strong> 18%<br>
+                    <strong>Fit Cultural Explorer:</strong> 17%<br>
+                    <strong>Curious Experience Seeker:</strong> 16%<br>
+                    <strong>Trendy FOMO Traveler:</strong> 15%<br>
+                    <strong>Self-Discovery Adventurous Soul:</strong> 15%</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Brand Health Trajectory -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-chart-line"></i> Brand Health Trajectory (Q1 2024 - Q1 2025)</h2>
+            <div class="chart-container">
+                <canvas id="brandHealthChart"></canvas>
+            </div>
+            <p style="color: var(--gray-700); margin-top: 15px; font-style: italic;">
+                <strong>Key Insight:</strong> All key metrics have shown improvement. While a dip in consideration was observed in Q3 2023 due to regional conflict, recovery trends are evident. Q1 2025 marked a positive shift with a 2-point increase in 12-month travel intent.
+            </p>
+        </div>
+
+        <!-- Celebrity Influence Framework -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-magic"></i> Celebrity Influence Framework in Chinese Market</h2>
+            <div class="viral-impact">
+                <div class="viral-card">
+                    <h4><i class="fas fa-lightbulb"></i> Source of Inspiration</h4>
+                    <p><strong>13% of Chinese consumers</strong> identify celebrities' travels or endorsements as a source of travel inspiration. While other sources are more prevalent, celebrity influence is still a notable factor.</p>
+                </div>
+                <div class="viral-card">
+                    <h4><i class="fas fa-chart-bar"></i> Higher Engagement</h4>
+                    <p><strong>2.8 celebrities</strong> average engagement vs 1.8 for general influencers. Chinese travelers show stronger engagement with celebrities, making them key drivers of travel decisions.</p>
+                </div>
+                <div class="viral-card">
+                    <h4><i class="fas fa-heart"></i> Strong Admiration & Loyalty</h4>
+                    <p>Celebrities command unique admiration and loyalty that significantly surpasses typical influencer followings. Fan bases are more robust and passionate, making celebrities powerful conduits for shaping travel aspirations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="background-color: var(--gray-100); padding: 20px 0; text-align: center; margin-top: 40px; border-top: 1px solid var(--gray-300);">
+        <div class="container">
+            <p style="margin: 0; color: var(--gray-700); font-size: 0.9rem;">© 2025 Research & Insights Unit | Strategic Marketing & Communications | Department of Culture and Tourism – Abu Dhabi</p>
+        </div>
+    </footer>
+
+    <script>
+        // Ad Diagnostics Chart
+        const adDiagnosticsCtx = document.getElementById('adDiagnosticsChart').getContext('2d');
+        new Chart(adDiagnosticsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Summer 2023 (1)\n(Without Liu Yifei)', 'Summer 2023 (2)\n(Without Liu Yifei)', 'Winter 2023\n(With Liu Yifei)', 'Summer 2024\n(With Liu Yifei)'],
+                datasets: [
+                    {
+                        label: 'Ad Recall (%)',
+                        data: [47, 45, 61, 66],
+                        backgroundColor: ['rgba(156, 163, 175, 0.6)', 'rgba(156, 163, 175, 0.6)', 'rgba(66, 133, 244, 0.8)', 'rgba(66, 133, 244, 1)'],
+                        borderColor: ['rgba(156, 163, 175, 1)', 'rgba(156, 163, 175, 1)', 'rgba(66, 133, 244, 1)', 'rgba(66, 133, 244, 1)'],
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Ad Association (%)',
+                        data: [18, 19, 45, 47],
+                        backgroundColor: ['rgba(156, 163, 175, 0.6)', 'rgba(156, 163, 175, 0.6)', 'rgba(52, 168, 83, 0.8)', 'rgba(52, 168, 83, 1)'],
+                        borderColor: ['rgba(156, 163, 175, 1)', 'rgba(156, 163, 175, 1)', 'rgba(52, 168, 83, 1)', 'rgba(52, 168, 83, 1)'],
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Ad Appeal (%)',
+                        data: [86, 85, 93, 97],
+                        backgroundColor: ['rgba(156, 163, 175, 0.6)', 'rgba(156, 163, 175, 0.6)', 'rgba(251, 188, 4, 0.8)', 'rgba(251, 188, 4, 1)'],
+                        borderColor: ['rgba(156, 163, 175, 1)', 'rgba(156, 163, 175, 1)', 'rgba(251, 188, 4, 1)', 'rgba(251, 188, 4, 1)'],
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#e0e0e0'
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Ad Performance Evolution with Liu Yifei',
+                        color: '#e0e0e0'
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#a0a0a0'
+                        },
+                        grid: {
+                            color: '#3d3d3d'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            color: '#a0a0a0'
+                        },
+                        grid: {
+                            color: '#3d3d3d'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Brand Health Chart
+        const brandHealthCtx = document.getElementById('brandHealthChart').getContext('2d');
+        new Chart(brandHealthCtx, {
+            type: 'line',
+            data: {
+                labels: ['Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024', 'Q1 2025'],
+                datasets: [
+                    {
+                        label: 'Awareness (%)',
+                        data: [48, 49, 49, 49, 50],
+                        borderColor: 'rgba(66, 133, 244, 1)',
+                        backgroundColor: 'rgba(66, 133, 244, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: '3-Year Consideration (%)',
+                        data: [30, 30, 28, 29, 31],
+                        borderColor: 'rgba(52, 168, 83, 1)',
+                        backgroundColor: 'rgba(52, 168, 83, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: '12-Month Intent (%)',
+                        data: [7, 8, 8, 8, 9],
+                        borderColor: 'rgba(251, 188, 4, 1)',
+                        backgroundColor: 'rgba(251, 188, 4, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#e0e0e0'
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Brand Health Metrics Progression',
+                        color: '#e0e0e0'
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#a0a0a0'
+                        },
+                        grid: {
+                            color: '#3d3d3d'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 60,
+                        ticks: {
+                            color: '#a0a0a0'
+                        },
+                        grid: {
+                            color: '#3d3d3d'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
