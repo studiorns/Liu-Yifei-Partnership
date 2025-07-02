@@ -198,6 +198,7 @@
             letter-spacing: 0.5px;
             display: flex;
             align-items: center;
+            justify-content: center;
         }
 
         .metric-name i {
@@ -659,7 +660,115 @@
             border-left-color: var(--secondary);
         }
 
-        @media (max-width: 768px) {
+        /* Responsive Design - Mobile First Approach */
+        
+        /* Mobile Styles (320px - 767px) */
+        @media (max-width: 767px) {
+            /* Container and Layout */
+            .container {
+                padding: 0 16px;
+                max-width: 100%;
+            }
+            
+            /* Header Responsive */
+            header h1 {
+                font-size: 1.8rem;
+                line-height: 1.2;
+                margin-bottom: 12px;
+            }
+            
+            header h2 {
+                font-size: 1rem !important;
+                margin-top: 8px !important;
+            }
+            
+            header p {
+                font-size: 0.9rem;
+                padding: 0 10px;
+            }
+            
+            .soner-logo {
+                font-size: 20px;
+            }
+            
+            .soner-tagline {
+                display: none; /* Hide tagline on mobile */
+            }
+            
+            /* Dashboard Sections */
+            .dashboard-section {
+                padding: 16px;
+                margin-bottom: 20px;
+                border-radius: var(--radius);
+            }
+            
+            .dashboard-section h2 {
+                font-size: 1.2rem;
+                margin-bottom: 20px;
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+            }
+            
+            .dashboard-section h2 i {
+                margin-bottom: 8px;
+                margin-right: 0;
+            }
+            
+            /* Navigation - Mobile Optimized */
+            .dashboard-nav {
+                position: static;
+                margin-bottom: 20px;
+                padding: 16px;
+            }
+            
+            .nav-title {
+                font-size: 1rem;
+                margin-bottom: 12px;
+            }
+            
+            .nav-list {
+                max-height: 200px;
+                overflow-y: auto;
+            }
+            
+            .nav-link {
+                padding: 12px;
+                font-size: 0.85rem;
+                min-height: 44px; /* Touch target */
+            }
+            
+            .expand-all-btn, .collapse-all-btn {
+                padding: 10px 14px;
+                font-size: 0.75rem;
+                margin-bottom: 8px;
+                display: block;
+                width: 100%;
+                margin-right: 0;
+            }
+            
+            /* Grids - Mobile Single Column */
+            .metrics-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .profile-360 {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .viral-impact {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .selection-process {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            /* Challenge Matrix - Stacked */
             .challenge-matrix-enhanced {
                 grid-template-columns: 1fr;
                 gap: 20px;
@@ -672,24 +781,403 @@
             .connector-line {
                 display: none;
             }
-        }
-
-        @media (max-width: 768px) {
+            
             .challenge-matrix {
                 grid-template-columns: 1fr;
+                gap: 20px;
             }
             
-            .metrics-grid {
-                grid-template-columns: 1fr;
+            /* Cards Optimization */
+            .metric-card {
+                padding: 16px;
+                text-align: center;
             }
             
-            .container {
-                padding: 0 16px;
+            .metric-value {
+                font-size: 1.5rem;
             }
             
-            .dashboard-section {
+            .metric-name {
+                font-size: 0.8rem;
+            }
+            
+            .viral-card {
+                padding: 16px;
+            }
+            
+            .viral-card h4 {
+                font-size: 1rem;
+                margin-bottom: 12px;
+            }
+            
+            /* Profile Stats */
+            .profile-stat {
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+            
+            .profile-stat-value {
+                font-size: 1.3rem;
+            }
+            
+            .profile-stat-label {
+                font-size: 0.8rem;
+            }
+            
+            /* Tables - Mobile Optimized Cards */
+            .comparison-table {
+                display: none; /* Hide table on mobile */
+            }
+            
+            /* Mobile Table Cards Container */
+            .mobile-table-cards {
+                display: block;
+                gap: 16px;
+            }
+            
+            /* Individual Campaign Cards */
+            .mobile-campaign-card {
+                background-color: var(--gray-100);
+                border-radius: var(--radius);
                 padding: 20px;
-                margin-bottom: 24px;
+                margin-bottom: 16px;
+                border: 1px solid var(--gray-300);
+                box-shadow: var(--shadow-sm);
+            }
+            
+            /* Liu Yifei Campaign Cards */
+            .mobile-campaign-card.liu-yifei {
+                background: linear-gradient(135deg, var(--secondary-light), rgba(52, 168, 83, 0.1));
+                border-left: 4px solid var(--secondary);
+                position: relative;
+            }
+            
+            /* Campaign Header */
+            .mobile-campaign-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 16px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--gray-300);
+            }
+            
+            .mobile-campaign-title {
+                font-weight: bold;
+                font-size: 1rem;
+                color: var(--gray-900);
+            }
+            
+            .mobile-campaign-type {
+                font-size: 0.8rem;
+                padding: 4px 8px;
+                border-radius: 12px;
+                font-weight: 600;
+            }
+            
+            .mobile-campaign-type.with-liu {
+                background-color: var(--secondary);
+                color: white;
+            }
+            
+            .mobile-campaign-type.without-liu {
+                background-color: var(--gray-400);
+                color: white;
+            }
+            
+            /* Campaign Metrics Grid */
+            .mobile-metrics-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                margin-bottom: 12px;
+            }
+            
+            .mobile-metric {
+                text-align: center;
+                padding: 12px;
+                background-color: var(--gray-200);
+                border-radius: var(--radius-sm);
+            }
+            
+            .mobile-metric-label {
+                font-size: 0.75rem;
+                color: var(--gray-600);
+                margin-bottom: 4px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            
+            .mobile-metric-value {
+                font-size: 1.1rem;
+                font-weight: bold;
+                color: var(--gray-900);
+            }
+            
+            /* Performance Badge */
+            .mobile-performance-badge {
+                text-align: center;
+                padding: 8px 12px;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                font-weight: 600;
+                margin-top: 12px;
+            }
+            
+            .mobile-performance-badge.superior {
+                background: linear-gradient(135deg, #22c55e, #16a34a);
+                color: white;
+            }
+            
+            .mobile-performance-badge.peak {
+                background: linear-gradient(135deg, #22c55e, #16a34a);
+                color: white;
+            }
+            
+            .mobile-performance-badge.cost-efficient {
+                background-color: var(--gray-300);
+                color: var(--gray-700);
+            }
+            
+            .mobile-performance-badge.standard {
+                background-color: var(--gray-300);
+                color: var(--gray-700);
+            }
+            
+            /* Special Badges for Records */
+            .mobile-record-badge {
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                background: linear-gradient(135deg, #FFD700, #FFA500);
+                color: #000;
+                padding: 4px 8px;
+                border-radius: 12px;
+                font-size: 0.65rem;
+                font-weight: bold;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            }
+            
+            /* Charts */
+            .chart-container {
+                height: 300px;
+                padding: 12px;
+            }
+            
+            /* Executive Summary Cards */
+            .dashboard-section[style*="background-color: #2d3748"] .metric-card {
+                margin-bottom: 12px;
+            }
+            
+            /* Force secondary metrics grid to single column on mobile */
+            .dashboard-section div[style*="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr))"] {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+            }
+            
+            /* Strategic Overview Cards - Stack */
+            .dashboard-section div[style*="grid-template-columns: repeat(2, 1fr)"] {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+            }
+            
+            /* Sentiment Cards */
+            .sentiment-breakdown {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            /* Process Steps */
+            .process-step {
+                padding: 16px;
+                margin-bottom: 16px;
+            }
+            
+            .process-step h4 {
+                font-size: 1rem;
+                margin-top: 8px;
+            }
+            
+            /* Challenge/Solution Items */
+            .challenge-item-enhanced,
+            .solution-item-enhanced {
+                min-height: auto;
+                height: auto;
+                padding: 16px;
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+            
+            .challenge-content,
+            .solution-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+            }
+            
+            /* Text Optimization */
+            .challenge-text strong,
+            .solution-text strong {
+                font-size: 0.9rem;
+            }
+            
+            .challenge-text span,
+            .solution-text span {
+                font-size: 0.8rem;
+            }
+            
+            /* Conclusion Section */
+            #conclusions .dashboard-section div[style*="padding: 32px"] {
+                padding: 20px !important;
+            }
+            
+            #conclusions p {
+                font-size: 0.9rem !important;
+                line-height: 1.6 !important;
+                margin-bottom: 16px !important;
+            }
+            
+            #conclusions h3 {
+                font-size: 1.1rem !important;
+                margin-bottom: 16px !important;
+            }
+            
+            /* Performance Summary Cards */
+            .dashboard-section div[style*="grid-template-columns: repeat(3, 1fr)"] {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+            }
+            
+            /* Ad Diagnostics Comparison */
+            .dashboard-section div[style*="grid-template-columns: 1fr auto 1fr"] {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+            }
+            
+            /* Hide transformation arrow on mobile */
+            .dashboard-section div[style*="text-align: center"] div[style*="background-color: var(--secondary)"] {
+                display: none;
+            }
+        }
+        
+        /* Desktop and Tablet - Hide Mobile Cards */
+        @media (min-width: 768px) {
+            .mobile-table-cards {
+                display: none !important;
+            }
+        }
+        
+        /* Tablet Styles (768px - 1023px) */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .container {
+                padding: 0 20px;
+            }
+            
+            /* Header */
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            header h2 {
+                font-size: 1.2rem !important;
+            }
+            
+            /* Dashboard Sections */
+            .dashboard-section {
+                padding: 24px;
+            }
+            
+            /* Grids - Tablet 2 Column */
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            .viral-impact {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            /* Profile Stats - Keep 2x2 */
+            .profile-360 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            /* Challenge Matrix - Stack on tablet */
+            .challenge-matrix-enhanced {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .matrix-divider {
+                display: none;
+            }
+            
+            .connector-line {
+                display: none;
+            }
+            
+            /* Tables */
+            .comparison-table {
+                font-size: 0.85rem;
+            }
+            
+            /* Charts */
+            .chart-container {
+                height: 350px;
+            }
+            
+            /* Performance Summary - 2 columns on tablet */
+            .dashboard-section div[style*="grid-template-columns: repeat(3, 1fr)"] {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 20px !important;
+            }
+        }
+        
+        /* Large Mobile Landscape (480px - 767px) */
+        @media (min-width: 480px) and (max-width: 767px) {
+            /* Keep 2 columns only for profile stats */
+            .profile-360 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* Touch Device Optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            /* Remove hover effects on touch devices */
+            .metric-card:hover,
+            .viral-card:hover,
+            .dashboard-section:hover {
+                transform: none;
+                box-shadow: var(--shadow);
+            }
+            
+            /* Ensure touch targets are large enough */
+            .nav-link,
+            .expand-all-btn,
+            .collapse-all-btn {
+                min-height: 44px;
+                padding: 12px;
+            }
+            
+            /* Optimize button spacing for touch */
+            .challenge-item-enhanced,
+            .solution-item-enhanced {
+                margin-bottom: 16px;
+            }
+        }
+        
+        /* High DPI Display Optimization */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .soner-logo {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
             }
         }
     </style>
@@ -718,32 +1206,51 @@
         <div class="dashboard-section" style="background-color: #2d3748; border: 1px solid var(--gray-300);">
             <h2 style="color: white; border-bottom: 2px solid var(--gray-300);"><i class="fas fa-trophy"></i> Executive Summary: Partnership Success</h2>
             
-            <!-- Success Declaration -->
+            <!-- Comprehensive Success Metrics -->
             <div style="background-color: var(--gray-100); padding: 24px; border-radius: var(--radius); margin-bottom: 24px; border-left: 4px solid var(--warning);">
-                <h3 style="color: var(--gray-900); font-size: 1.5rem; margin-bottom: 15px; font-weight: 600; display: flex; align-items: center;">
+                <h3 style="color: var(--gray-900); font-size: 1.5rem; margin-bottom: 20px; font-weight: 600; display: flex; align-items: center;">
                     <i class="fas fa-medal" style="margin-right: 12px; color: var(--warning);"></i>
-                    STRATEGIC SUCCESS ACHIEVED
+                    STRATEGIC SUCCESS ACHIEVED - KEY PERFORMANCE METRICS
                 </h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                
+                <!-- Primary Metrics Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 24px;">
                     <div class="metric-card" style="text-align: center; border-left: 4px solid var(--secondary);">
-                        <div class="metric-value" style="color: var(--secondary);">274.3B</div>
+                        <div class="metric-value" style="color: var(--secondary);">323B</div>
                         <div class="metric-name" style="color: var(--gray-700);">Earned Media Reach</div>
-                        <div style="font-size: 0.8rem; color: var(--secondary); font-weight: 600;">+600% vs 2024</div>
                     </div>
                     <div class="metric-card" style="text-align: center; border-left: 4px solid var(--primary);">
-                        <div class="metric-value" style="color: var(--primary);">$2.9M</div>
-                        <div class="metric-name" style="color: var(--gray-700);">Media Value</div>
-                        <div style="font-size: 0.8rem; color: var(--primary); font-weight: 600;">+1,800% vs 2024</div>
+                        <div class="metric-value" style="color: var(--primary);">432M</div>
+                        <div class="metric-name" style="color: var(--gray-700);">Social Impressions</div>
                     </div>
                     <div class="metric-card" style="text-align: center; border-left: 4px solid var(--warning);">
-                        <div class="metric-value" style="color: var(--warning);">+2pts</div>
+                        <div class="metric-value" style="color: var(--warning);">$3M</div>
+                        <div class="metric-name" style="color: var(--gray-700);">Media Value</div>
+                    </div>
+                    <div class="metric-card" style="text-align: center; border-left: 4px solid var(--danger);">
+                        <div class="metric-value" style="color: var(--danger);">+2pts</div>
                         <div class="metric-name" style="color: var(--gray-700);">Travel Intent Uplift</div>
-                        <div style="font-size: 0.8rem; color: var(--warning); font-weight: 600;">12-Month Intent</div>
+                        <div style="font-size: 0.8rem; color: var(--danger); font-weight: 600;">12-Month Intent</div>
+                    </div>
+                </div>
+                
+                <!-- Secondary Metrics Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 20px;">
+                    <div class="metric-card" style="text-align: center; border-left: 4px solid var(--secondary);">
+                        <div class="metric-value" style="color: var(--secondary);">4.3K</div>
+                        <div class="metric-name" style="color: var(--gray-700);">Mentions</div>
+                    </div>
+                    <div class="metric-card" style="text-align: center; border-left: 4px solid var(--primary);">
+                        <div class="metric-value" style="color: var(--primary);">83.56%</div>
+                        <div class="metric-name" style="color: var(--gray-700);">Positive & Neutral Sentiment</div>
+                    </div>
+                    <div class="metric-card" style="text-align: center; border-left: 4px solid var(--warning);">
+                        <div class="metric-value" style="color: var(--warning);">66%</div>
+                        <div class="metric-name" style="color: var(--gray-700);">Ad Recall Peak</div>
                     </div>
                     <div class="metric-card" style="text-align: center; border-left: 4px solid var(--danger);">
                         <div class="metric-value" style="color: var(--danger);">#1</div>
-                        <div class="metric-name" style="color: var(--gray-700);">Weibo Trending</div>
-                        <div style="font-size: 0.8rem; color: var(--danger); font-weight: 600;">Feb 2024</div>
+                        <div class="metric-name" style="color: var(--gray-700);">Weibo Trending (Feb 2024)</div>
                     </div>
                 </div>
             </div>
@@ -776,7 +1283,7 @@
                         <i class="fas fa-rocket" style="margin-right: 8px; color: var(--danger);"></i>
                         Impact Delivered
                     </h4>
-                    <p style="color: var(--gray-700); font-size: 0.95rem; line-height: 1.6;">Viral phenomenon: "Liu Yifei Storm", 432M impressions (¼ Chinese population), consistently outperformed generic assets, transformed Abu Dhabi from "niche" to viral hotspot.</p>
+                    <p style="color: var(--gray-700); font-size: 0.95rem; line-height: 1.6;">Viral phenomenon: "Liu Yifei Storm", 432M impressions, consistently outperformed generic assets, transformed Abu Dhabi from "niche" to viral hotspot.</p>
                 </div>
             </div>
             
@@ -1038,49 +1545,6 @@
             </div>
         </div>
 
-        <!-- Detailed Impact Metrics -->
-        <div class="dashboard-section">
-            <h2><i class="fas fa-chart-line"></i> Detailed Impact Metrics</h2>
-            <div class="metrics-grid">
-                <div class="metric-card">
-                    <div class="metric-name"><i class="fas fa-globe"></i> Earned Media Reach</div>
-                    <div class="metric-value">274.3B <span class="change positive"><i class="fas fa-arrow-up"></i> +600% vs 2024</span></div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-name"><i class="fas fa-eye"></i> Social Impressions</div>
-                    <div class="metric-value">432M <span class="change positive"><i class="fas fa-users"></i> ¼ Chinese Population</span></div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-name"><i class="fas fa-bullseye"></i> Travel Intent Uplift</div>
-                    <div class="metric-value">+2pts <span class="change positive"><i class="fas fa-arrow-up"></i> 12-Month Intent</span></div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-name"><i class="fas fa-dollar-sign"></i> Media Value</div>
-                    <div class="metric-value">$2.9M <span class="change positive"><i class="fas fa-arrow-up"></i> +1,800% vs 2024</span></div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-name"><i class="fas fa-hashtag"></i> Mentions</div>
-                    <div class="metric-value">3.5K <span class="change positive"><i class="fas fa-arrow-up"></i> +500% vs 2024</span></div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-name"><i class="fas fa-heart"></i> Positive Sentiment</div>
-                    <div class="metric-value">50.88% <span class="change positive"><i class="fas fa-arrow-up"></i> +51% vs 2024</span></div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-name"><i class="fas fa-brain"></i> Ad Recall Peak</div>
-                    <div class="metric-value">66% <span class="change positive"><i class="fas fa-arrow-up"></i> vs 47% Summer '23</span></div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-name"><i class="fas fa-star"></i> Trust Level (Top Segment)</div>
-                    <div class="metric-value">27% <span class="change positive"><i class="fas fa-users"></i> Authenticity Seekers</span></div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-name"><i class="fas fa-fire"></i> Weibo Trending</div>
-                    <div class="metric-value">#1 <span class="change positive"><i class="fab fa-weibo"></i> Feb 2024 Hot Topic</span></div>
-                </div>
-            </div>
-        </div>
-
         <!-- Campaign Performance Comparison -->
         <div class="dashboard-section">
             <h2><i class="fas fa-chart-bar"></i> Campaign Media Performance: With vs Without Liu Yifei</h2>
@@ -1147,6 +1611,119 @@
                     </tr>
                 </tbody>
             </table>
+
+            <!-- Mobile Optimized Cards (Hidden on Desktop) -->
+            <div class="mobile-table-cards">
+                <!-- Winter 2023 - Liu Yifei Campaign -->
+                <div class="mobile-campaign-card liu-yifei">
+                    <div class="mobile-record-badge">PEAK VTR</div>
+                    <div class="mobile-campaign-header">
+                        <div class="mobile-campaign-title">Winter 2023</div>
+                        <div class="mobile-campaign-type with-liu">With Liu Yifei</div>
+                    </div>
+                    <div class="mobile-metrics-grid">
+                        <div class="mobile-metric">
+                            <div class="mobile-metric-label">CPV</div>
+                            <div class="mobile-metric-value">$0.00126</div>
+                        </div>
+                        <div class="mobile-metric">
+                            <div class="mobile-metric-label">VTR</div>
+                            <div class="mobile-metric-value" style="color: var(--secondary); font-weight: bold;">42.8%</div>
+                        </div>
+                        <div class="mobile-metric">
+                            <div class="mobile-metric-label">ER</div>
+                            <div class="mobile-metric-value" style="color: var(--secondary); font-weight: bold;">2.07%</div>
+                        </div>
+                        <div class="mobile-metric">
+                            <div class="mobile-metric-label">Performance</div>
+                            <div class="mobile-metric-value" style="font-size: 0.9rem;">Superior</div>
+                        </div>
+                    </div>
+                    <div class="mobile-performance-badge superior">Superior Engagement</div>
+                </div>
+
+                <!-- Summer 2024 - Liu Yifei Campaign -->
+                <div class="mobile-campaign-card liu-yifei">
+                    <div class="mobile-record-badge">RECORD</div>
+                    <div class="mobile-campaign-header">
+                        <div class="mobile-campaign-title">Summer 2024</div>
+                        <div class="mobile-campaign-type with-liu">With Liu Yifei</div>
+                    </div>
+                    <div class="mobile-metrics-grid">
+                        <div class="mobile-metric">
+                            <div class="mobile-metric-label">CPV</div>
+                            <div class="mobile-metric-value">$0.00108</div>
+                        </div>
+                        <div class="mobile-metric">
+                            <div class="mobile-metric-label">VTR</div>
+                            <div class="mobile-metric-value">35.0%</div>
+                        </div>
+                        <div class="mobile-metric">
+                            <div class="mobile-metric-label">ER</div>
+                            <div class="mobile-metric-value" style="color: var(--secondary); font-weight: bold; font-size: 1.2rem;">3.26%</div>
+                        </div>
+                        <div class="mobile-metric">
+                            <div class="mobile-metric-label">Performance</div>
+                            <div class="mobile-metric-value" style="font-size: 0.9rem;">Peak</div>
+                        </div>
+                    </div>
+                    <div class="mobile-performance-badge peak">Peak Performance</div>
+                </div>
+
+                <!-- GBA 2024-25 - Without Liu Yifei -->
+                <div class="mobile-campaign-card">
+                    <div class="mobile-campaign-header">
+                        <div class="mobile-campaign-title">GBA 2024-25</div>
+                        <div class="mobile-campaign-type without-liu">Without Liu Yifei</div>
+                    </div>
+                    <div class="mobile-metrics-grid">
+                        <div class="mobile-metric">
+                            <div class="mobile-metric-label">CPV</div>
+                            <div class="mobile-metric-value" style="color: var(--primary); font-weight: bold;">$0.00087</div>
+                        </div>
+                        <div class="mobile-metric">
+                            <div class="mobile-metric-label">VTR</div>
+                            <div class="mobile-metric-value">41.2%</div>
+                        </div>
+                        <div class="mobile-metric">
+                            <div class="mobile-metric-label">ER</div>
+                            <div class="mobile-metric-value">1.61%</div>
+                        </div>
+                        <div class="mobile-metric">
+                            <div class="mobile-metric-label">Performance</div>
+                            <div class="mobile-metric-value" style="font-size: 0.9rem;">Cost Efficient</div>
+                        </div>
+                    </div>
+                    <div class="mobile-performance-badge cost-efficient">Cost Efficient</div>
+                </div>
+
+                <!-- Brand 2023-24 - Without Liu Yifei -->
+                <div class="mobile-campaign-card">
+                    <div class="mobile-campaign-header">
+                        <div class="mobile-campaign-title">Brand 2023-24</div>
+                        <div class="mobile-campaign-type without-liu">Without Liu Yifei</div>
+                    </div>
+                    <div class="mobile-metrics-grid">
+                        <div class="mobile-metric">
+                            <div class="mobile-metric-label">CPV</div>
+                            <div class="mobile-metric-value">$0.00138</div>
+                        </div>
+                        <div class="mobile-metric">
+                            <div class="mobile-metric-label">VTR</div>
+                            <div class="mobile-metric-value">38.6%</div>
+                        </div>
+                        <div class="mobile-metric">
+                            <div class="mobile-metric-label">ER</div>
+                            <div class="mobile-metric-value">1.97%</div>
+                        </div>
+                        <div class="mobile-metric">
+                            <div class="mobile-metric-label">Performance</div>
+                            <div class="mobile-metric-value" style="font-size: 0.9rem;">Standard</div>
+                        </div>
+                    </div>
+                    <div class="mobile-performance-badge standard">Standard Performance</div>
+                </div>
+            </div>
             
             <!-- Strategic Performance Analysis -->
             <div style="background-color: var(--section-bg); border: 1px solid var(--secondary); border-radius: var(--radius); padding: 28px; margin-top: 28px;">
@@ -1404,35 +1981,15 @@
                 <div style="color: var(--gray-800); font-size: 1rem; max-width: none;">
                     
                     <p style="margin-bottom: 20px;">
-                        The Liu Yifei partnership commenced in Q3 2023 with the Winter Campaign, marking Abu Dhabi's strategic entry into celebrity-driven marketing for the Chinese market. Over the subsequent 21-month period through Q2 2025, this collaboration evolved from an innovative marketing approach into a transformational cultural phenomenon that fundamentally altered Abu Dhabi's position in China.
+                        The Liu Yifei partnership launched in Winter 2023, establishing Abu Dhabi's strategic entry into celebrity-driven marketing for China. The collaboration achieved strong initial engagement, validating the approach and setting the foundation for exceptional performance throughout 2024. The breakthrough came in February 2024 when "Liu Yifei Abu Dhabi" achieved #1 trending on Weibo, generating massive organic reach and transforming the partnership into a cultural phenomenon.
                     </p>
                     
                     <p style="margin-bottom: 20px;">
-                        The partnership's foundation was established during Winter 2023, achieving an initial <strong style="color: var(--secondary);">2.07% engagement rate</strong> that validated the strategic approach. This early success provided the groundwork for what would become an unprecedented marketing transformation throughout 2024. The breakthrough moment arrived in February 2024 when "Liu Yifei Abu Dhabi new shooting" achieved <strong style="color: var(--danger);">#1 trending position on Weibo</strong>, generating massive organic reach and establishing the viral phenomenon that would define the partnership.
-                    </p>
-                    
-                    <p style="margin-bottom: 20px;">
-                        The 2024 performance period demonstrated exceptional results across all measured metrics. The partnership generated <strong style="color: var(--secondary);">274.3B earned media reach</strong> representing a <strong style="color: var(--secondary);">600% increase versus 2024 baseline</strong>, while achieving <strong style="color: var(--primary);">432M social impressions</strong> that reached approximately one-quarter of the Chinese population. Media value reached <strong style="color: var(--warning);">$2.9M</strong>, marking an <strong style="color: var(--warning);">1,800% increase</strong> over previous performance levels. The partnership's peak came during Summer 2024, when campaigns achieved a record <strong style="color: var(--secondary);">3.26% engagement rate</strong>, demonstrating the exceptional audience connection that Liu Yifei's involvement created.
-                    </p>
-                    
-                    <p style="margin-bottom: 20px;">
-                        Beyond quantitative metrics, the partnership created measurable cultural impact that transcended traditional tourism marketing. Fans began replicating Liu Yifei's exact Abu Dhabi itinerary, visiting the Grand Mosque, Louvre Abu Dhabi, Qasr Al Watan, Emirates Palace, and participating in desert safaris. The cultural integration reached such depth that fan groups adopted "Liu Yifei" as a salutation meaning "the most beautiful and incredible female," transforming the celebrity's name into a cultural reference point that extended far beyond tourism promotion.
-                    </p>
-                    
-                    <p style="margin-bottom: 20px;">
-                        Campaign performance analysis revealed consistent superiority over non-celebrity approaches. Liu Yifei campaigns achieved a <strong style="color: var(--secondary);">49% engagement rate advantage</strong> (2.67% versus 1.79% for standard campaigns), while ad recall improved by <strong style="color: var(--primary);">38%</strong> (63.5% versus 46% baseline). Brand association effectiveness increased by <strong style="color: var(--warning);">149%</strong> (46% versus 18.5% baseline), demonstrating the partnership's ability to connect advertising content directly to Abu Dhabi as a destination. Sentiment analysis showed <strong style="color: var(--secondary);">83.56% positive and neutral sentiment</strong> versus 16.44% negative, with positive sentiment increasing by 51% compared to 2024 levels.
-                    </p>
-                    
-                    <p style="margin-bottom: 20px;">
-                        The partnership's operational execution validated initial risk assessments throughout the measurement period. Liu Yifei maintained her <strong style="color: var(--secondary);">Risk Rank 1 (Low)</strong> classification, with professional collaboration sustained across all contracted activities, trips, and shooting periods. This operational success provided the stable foundation that enabled the partnership's creative and commercial achievements.
-                    </p>
-                    
-                    <p style="margin-bottom: 20px;">
-                        The trajectory into 2025 demonstrated sustained momentum, with Q1 2025 showing a <strong style="color: var(--warning);">2-point increase in 12-month travel intent</strong>, indicating that the partnership's impact extended beyond immediate awareness into concrete travel consideration. The geographic reach expanded across 10 countries, establishing Abu Dhabi's enhanced international profile through Liu Yifei's global recognition and appeal.
+                        The partnership created measurable cultural impact beyond traditional metrics. Fans replicated Liu Yifei's exact Abu Dhabi itinerary and adopted "Liu Yifei" as a cultural reference within fan communities. Campaign performance consistently outperformed non-celebrity approaches, with Liu Yifei maintaining her <strong style="color: var(--secondary);">Risk Rank 1 (Low)</strong> classification throughout all contracted activities.
                     </p>
                     
                     <p style="margin-bottom: 0; font-weight: 500; color: var(--gray-900);">
-                        The 21-month partnership journey from Q3 2023 through Q2 2025 represents a comprehensive transformation of Abu Dhabi's marketing approach and market position in China. The measured results demonstrate that strategic celebrity partnerships, when executed with appropriate selection criteria and professional collaboration, can generate exceptional performance across awareness, engagement, cultural integration, and travel intent metrics. The Liu Yifei partnership established a new benchmark for destination marketing effectiveness in the Chinese market, creating both immediate impact and sustained positive trajectory that continued throughout the measurement period.
+                        The partnership delivered sustained results through Q1 2025, contributing to a <strong style="color: var(--warning);">2-point increase in 12-month travel intent</strong> and expanding Abu Dhabi's profile across 10 countries. This strategic collaboration established a new benchmark for destination marketing effectiveness in the Chinese market, demonstrating that well-executed celebrity partnerships can generate exceptional performance across awareness, engagement, and cultural integration.
                     </p>
                     
                 </div>
@@ -1448,70 +2005,170 @@
     </footer>
 
     <script>
-        // Ad Diagnostics Chart
+        // Ad Diagnostics Chart with Mobile Optimization
         const adDiagnosticsCtx = document.getElementById('adDiagnosticsChart').getContext('2d');
+        
+        // Detect mobile device
+        const isMobile = window.innerWidth <= 767;
+        
+        // Mobile-optimized labels
+        const mobileLabels = [
+            'Summer 2023 (1)\nWithout Liu Yifei',
+            'Summer 2023 (2)\nWithout Liu Yifei', 
+            'Winter 2023\nWith Liu Yifei',
+            'Summer 2024\nWith Liu Yifei'
+        ];
+        
+        const desktopLabels = [
+            'Summer 2023 (1)\n(Without Liu Yifei)',
+            'Summer 2023 (2)\n(Without Liu Yifei)',
+            'Winter 2023\n(With Liu Yifei)',
+            'Summer 2024\n(With Liu Yifei)'
+        ];
+        
         new Chart(adDiagnosticsCtx, {
             type: 'bar',
             data: {
-                labels: ['Summer 2023 (1)\n(Without Liu Yifei)', 'Summer 2023 (2)\n(Without Liu Yifei)', 'Winter 2023\n(With Liu Yifei)', 'Summer 2024\n(With Liu Yifei)'],
+                labels: isMobile ? mobileLabels : desktopLabels,
                 datasets: [
                     {
                         label: 'Ad Recall (%)',
                         data: [47, 45, 61, 66],
                         backgroundColor: ['rgba(156, 163, 175, 0.6)', 'rgba(156, 163, 175, 0.6)', 'rgba(66, 133, 244, 0.8)', 'rgba(66, 133, 244, 1)'],
                         borderColor: ['rgba(156, 163, 175, 1)', 'rgba(156, 163, 175, 1)', 'rgba(66, 133, 244, 1)', 'rgba(66, 133, 244, 1)'],
-                        borderWidth: 2
+                        borderWidth: isMobile ? 1 : 2
                     },
                     {
                         label: 'Ad Association (%)',
                         data: [18, 19, 45, 47],
                         backgroundColor: ['rgba(156, 163, 175, 0.6)', 'rgba(156, 163, 175, 0.6)', 'rgba(52, 168, 83, 0.8)', 'rgba(52, 168, 83, 1)'],
                         borderColor: ['rgba(156, 163, 175, 1)', 'rgba(156, 163, 175, 1)', 'rgba(52, 168, 83, 1)', 'rgba(52, 168, 83, 1)'],
-                        borderWidth: 2
+                        borderWidth: isMobile ? 1 : 2
                     },
                     {
                         label: 'Ad Appeal (%)',
                         data: [86, 85, 93, 97],
                         backgroundColor: ['rgba(156, 163, 175, 0.6)', 'rgba(156, 163, 175, 0.6)', 'rgba(251, 188, 4, 0.8)', 'rgba(251, 188, 4, 1)'],
                         borderColor: ['rgba(156, 163, 175, 1)', 'rgba(156, 163, 175, 1)', 'rgba(251, 188, 4, 1)', 'rgba(251, 188, 4, 1)'],
-                        borderWidth: 2
+                        borderWidth: isMobile ? 1 : 2
                     }
                 ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
                 plugins: {
                     legend: {
-                        position: 'top',
+                        position: isMobile ? 'bottom' : 'top',
                         labels: {
-                            color: '#e0e0e0'
+                            color: '#e0e0e0',
+                            font: {
+                                size: isMobile ? 11 : 12
+                            },
+                            padding: isMobile ? 15 : 20,
+                            usePointStyle: isMobile,
+                            boxWidth: isMobile ? 12 : 40,
+                            boxHeight: isMobile ? 12 : 12
                         }
                     },
                     title: {
                         display: true,
-                        text: 'Ad Performance Evolution with Liu Yifei',
-                        color: '#e0e0e0'
+                        text: isMobile ? 'Ad Performance Evolution' : 'Ad Performance Evolution with Liu Yifei',
+                        color: '#e0e0e0',
+                        font: {
+                            size: isMobile ? 14 : 16,
+                            weight: 'bold'
+                        },
+                        padding: {
+                            top: 10,
+                            bottom: isMobile ? 15 : 20
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                        borderColor: '#4285f4',
+                        borderWidth: 1,
+                        cornerRadius: 8,
+                        displayColors: true,
+                        titleFont: {
+                            size: isMobile ? 12 : 14
+                        },
+                        bodyFont: {
+                            size: isMobile ? 11 : 13
+                        },
+                        padding: isMobile ? 8 : 12
                     }
                 },
                 scales: {
                     x: {
                         ticks: {
-                            color: '#a0a0a0'
+                            color: '#a0a0a0',
+                            font: {
+                                size: isMobile ? 9 : 11
+                            },
+                            maxRotation: isMobile ? 45 : 0,
+                            minRotation: isMobile ? 45 : 0
                         },
                         grid: {
-                            color: '#3d3d3d'
+                            color: '#3d3d3d',
+                            display: !isMobile
+                        },
+                        title: {
+                            display: isMobile,
+                            text: 'Campaign Periods',
+                            color: '#a0a0a0',
+                            font: {
+                                size: 10,
+                                weight: 'bold'
+                            }
                         }
                     },
                     y: {
                         beginAtZero: true,
                         max: 100,
                         ticks: {
-                            color: '#a0a0a0'
+                            color: '#a0a0a0',
+                            font: {
+                                size: isMobile ? 10 : 12
+                            },
+                            stepSize: isMobile ? 20 : 10,
+                            callback: function(value) {
+                                return value + '%';
+                            }
                         },
                         grid: {
-                            color: '#3d3d3d'
+                            color: '#3d3d3d',
+                            lineWidth: isMobile ? 0.5 : 1
+                        },
+                        title: {
+                            display: isMobile,
+                            text: 'Performance (%)',
+                            color: '#a0a0a0',
+                            font: {
+                                size: 10,
+                                weight: 'bold'
+                            }
                         }
+                    }
+                },
+                layout: {
+                    padding: {
+                        top: isMobile ? 10 : 20,
+                        bottom: isMobile ? 10 : 20,
+                        left: isMobile ? 5 : 10,
+                        right: isMobile ? 5 : 10
+                    }
+                },
+                elements: {
+                    bar: {
+                        borderRadius: isMobile ? 2 : 4,
+                        borderSkipped: false
                     }
                 }
             }
